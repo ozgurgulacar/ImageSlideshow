@@ -1,6 +1,7 @@
 package com.denzcoskun.imageslideshow
 
 import android.os.Bundle
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.denzcoskun.imageslider.ImageSlider
 import com.denzcoskun.imageslider.constants.ActionTypes
@@ -23,16 +24,19 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val imageSlider = findViewById<ImageSlider>(R.id.image_slider) // init imageSlider
+        val imageSlider = findViewById<ImageSlider>(R.id.image_slider)
+
 
         val imageList = ArrayList<SlideModel>() // Create image list
-        imageList.add(SlideModel("https://t.ly/aaa_", "The future is our hands."))
-        imageList.add(SlideModel("https://t.ly/sg91", "Climate change is moving very fast."))
-        imageList.add(SlideModel("https://t.ly/hqW3", "The population has decreased by 27 percent in the last 5 years."))
+        imageList.add(SlideModel(R.drawable.img))
+        imageList.add(SlideModel(R.drawable.img_1))
+        imageList.add(SlideModel(R.drawable.img_2))
+        imageList.add(SlideModel(R.drawable.img_3))
+        imageList.add(SlideModel(R.drawable.img_4))
 
-        imageSlider.setImageList(imageList, ScaleTypes.CENTER_CROP)
+        imageSlider.setImageList(imageList,100,300)
 
-        imageSlider.setSlideAnimation(AnimationTypes.ZOOM_OUT)
+        imageSlider.setSlideAnimation(AnimationTypes.CUBE_OUT)
 
         imageSlider.setItemClickListener(object : ItemClickListener {
             override fun onItemSelected(position: Int) {

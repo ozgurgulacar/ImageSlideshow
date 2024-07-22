@@ -27,13 +27,15 @@ class ViewPagerAdapter(context: Context?,
                        private var radius: Int,
                        private var errorImage: Int,
                        private var placeholder: Int,
+                       private var resizeWidth: Int?,
+                       private var resizeHeight: Int?,
                        private var titleBackground: Int,
                        private var scaleType: ScaleTypes?,
                        private var textAlign: String,
                        private var textColor: String) : PagerAdapter() {
 
     constructor(context: Context, imageList: List<SlideModel>, radius: Int, errorImage: Int, placeholder: Int, titleBackground: Int, textAlign: String, textColor: String) :
-            this(context, imageList, radius, errorImage, placeholder, titleBackground, null, textAlign, textColor)
+            this(context, imageList, radius, errorImage, placeholder,null,null ,titleBackground, null, textAlign, textColor)
 
     private var imageList: List<SlideModel>? = imageList
     private var layoutInflater: LayoutInflater? = context!!.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater?
@@ -76,17 +78,32 @@ class ViewPagerAdapter(context: Context?,
             Picasso.get().load(imageList!![position].imageUrl!!)
         }
 
+
+
+        // set Picasso options RESİZE
+        if (resizeHeight!=null && resizeWidth!=null){
+            if (scaleType==null){
+                loader.resize(resizeWidth!!,resizeHeight!!)
+            }else if ((scaleType != null && scaleType == ScaleTypes.CENTER_CROP) || imageList!![position].scaleType == ScaleTypes.CENTER_CROP){
+                loader.resize(resizeWidth!!,resizeHeight!!).centerCrop()
+            } else if((scaleType != null && scaleType == ScaleTypes.CENTER_INSIDE) || imageList!![position].scaleType == ScaleTypes.CENTER_INSIDE){
+                loader.resize(resizeWidth!!,resizeHeight!!).centerInside()
+            }
+        }
+
+
         // set Picasso options.
-        if ((scaleType != null && scaleType == ScaleTypes.CENTER_CROP) || imageList!![position].scaleType == ScaleTypes.CENTER_CROP){
-            loader.fit().centerCrop()
-        } else if((scaleType != null && scaleType == ScaleTypes.CENTER_INSIDE) || imageList!![position].scaleType == ScaleTypes.CENTER_INSIDE){
-            loader.fit().centerInside()
-        }else if((scaleType != null && scaleType == ScaleTypes.FIT) || imageList!![position].scaleType == ScaleTypes.FIT){
-            loader.fit()
+        if (resizeHeight==null && resizeWidth==null) {
+            if ((scaleType != null && scaleType == ScaleTypes.CENTER_CROP) || imageList!![position].scaleType == ScaleTypes.CENTER_CROP) {
+                loader.fit().centerCrop()
+            } else if ((scaleType != null && scaleType == ScaleTypes.CENTER_INSIDE) || imageList!![position].scaleType == ScaleTypes.CENTER_INSIDE) {
+                loader.fit().centerInside()
+            } else if ((scaleType != null && scaleType == ScaleTypes.FIT) || imageList!![position].scaleType == ScaleTypes.FIT) {
+                loader.fit()
+            }
         }
 
         loader.transform(RoundedTransformation(radius, 0))
-            .placeholder(placeholder)
             .error(errorImage)
             .into(imageView)
 

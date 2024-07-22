@@ -118,9 +118,39 @@ class ImageSlider @JvmOverloads constructor(
      * @param  scaleType  scale type for all image
      */
     fun setImageList(imageList: List<SlideModel>, scaleType: ScaleTypes? = null) {
-        viewPagerAdapter = ViewPagerAdapter( context, imageList, cornerRadius, errorImage, placeholder, titleBackground, scaleType, textAlign, textColor)
+        viewPagerAdapter = ViewPagerAdapter( context, imageList, cornerRadius, errorImage, placeholder,null,null, titleBackground, scaleType, textAlign, textColor)
         setAdapter(imageList)
     }
+
+
+    /**
+     * Set image list to adapter.
+     *
+     * @param  imageList  the image list by user
+     * @param  width  the width to which each image should be resized
+     * @param  height  the height to which each image should be resized
+     */
+    fun setImageList(imageList: List<SlideModel>,width: Int,height: Int) {
+        viewPagerAdapter = ViewPagerAdapter( context, imageList, cornerRadius, errorImage, placeholder,width,height, titleBackground, null, textAlign, textColor)
+        setAdapter(imageList)
+    }
+
+
+
+
+    /**
+     * Set image list to adapter.
+     *
+     * @param  imageList  the image list by user
+     * @param  width  the width to which each image should be resized
+     * @param  height  the height to which each image should be resized
+     * @param  scaleType  scale type for all image
+     */
+    fun setImageList(imageList: List<SlideModel>,width: Int,height: Int, scaleType: ScaleTypes? = null) {
+        viewPagerAdapter = ViewPagerAdapter( context, imageList, cornerRadius, errorImage, placeholder,width,height, titleBackground, scaleType, textAlign, textColor)
+        setAdapter(imageList)
+    }
+
 
     private fun setAdapter(imageList: List<SlideModel>){
         viewPager!!.adapter = viewPagerAdapter
